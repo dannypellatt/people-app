@@ -1,49 +1,34 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './App.css';
 import ContactCard from './ContactCard';
 
 const App = () => {
-  const contacts = [
-    {
-      avatarUrl: "https://via.placeholder.com/150",
-      name: "Jenny Han",
-      email: "notreasl@notreasl.com",
-      age: 25
-    },
-    {
-      avatarUrl: "https://via.placeholder.com/150",
-      name: "Jenny bloo",
-      email: "notreasgsl@notreasl.com",
-      age: 35
-    },
-    {
-      avatarUrl: "https://via.placeholder.com/150",
-      name: "Jim Him",
-      email: "not@notreasl.com",
-      age: 99
-    },
-    {
-      avatarUrl: "https://via.placeholder.com/150",
-      name: "Per Son",
-      email: "hiemail@notreasl.com",
-      age: 206
-    }
-  ];
+
+  const [results, setResults] = useState([]);
+
+  useEffect(()=> {
+    fetch("https://randomuser.me/api/?results=5")
+    .then(response => response.json())
+    .then(data => { 
+      console.log(data)
+      setResults(data.results)
+    });
+  }, [])
+
   return(
     <div>
-      {contacts.map((contact, index) => {
+      {results.map((result, index) => {
         return(
           <ContactCard 
             key={index}
-            avatarUrl = {contact.avatarUrl}
-            name = {contact.name}
-            email = {contact.email}
-            age = {contact.age}
+            avatarUrl = {result.picture.large}
+            name = {result.name.first + " " + result.name.last}
+            email = {result.email}
+            age = {result.dob.age}
           />
         )
       })}
     </div>
-    
   )
 }
 
